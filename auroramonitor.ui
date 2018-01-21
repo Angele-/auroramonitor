@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>793</width>
-    <height>840</height>
+    <height>842</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="getAllskyButton">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>60</y>
+      <x>0</x>
+      <y>0</y>
       <width>291</width>
       <height>51</height>
      </rect>
@@ -60,7 +60,7 @@
     <property name="title">
      <string>Aurora pixels :</string>
     </property>
-    <widget class="QLCDNumber" name="lcdNumber">
+    <widget class="QLCDNumber" name="lcdAuroraPixels">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -87,7 +87,7 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>500</x>
       <y>300</y>
       <width>151</width>
       <height>71</height>
@@ -117,7 +117,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>380</y>
+      <y>240</y>
       <width>291</width>
       <height>51</height>
      </rect>
@@ -135,7 +135,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>220</y>
+      <y>60</y>
       <width>291</width>
       <height>51</height>
      </rect>
@@ -146,7 +146,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Get All Sky</string>
+     <string>Get Aurora Pixels</string>
     </property>
    </widget>
   </widget>
