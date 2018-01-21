@@ -1,12 +1,16 @@
 #include "auroramonitor.h"
 #include "ui_auroramonitor.h"
 #include "filedownloader.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QDataStream>
 
 auroramonitor::auroramonitor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::auroramonitor)
 {
     ui->setupUi(this);
+
 }
 
 auroramonitor::~auroramonitor()
@@ -17,12 +21,51 @@ auroramonitor::~auroramonitor()
 void auroramonitor::loadImage()
 {
  QPixmap buttonImage;
- buttonImage.loadFromData(m_pImgCtrl->downloadedData());
+ buttonImage.loadFromData(allsky_->downloadedData());
+ QGraphicsScene* scene = new QGraphicsScene;
+ scene->addPixmap(buttonImage);
+
+ ui->allskyGraphicsView->setScene(scene);
 }
 
-void auroramonitor::on_pushButton_clicked()
+void auroramonitor::displayKp()
 {
-    QUrl imageUrl("http://www2.irf.se/allsky/LASTv2.JPG");
-    m_pImgCtrl = new FileDownloader(imageUrl, this);
-    connect(m_pImgCtrl, SIGNAL (downloaded()), this, SLOT (loadImage()));
+
+    QDataStream in(kpIndex_->downloadedData());
+    in.setByteOrder(QDataStream::LittleEndian);
+    double kpvalue;
+    in >> kpvalue;
+
+    ui->lcdKp->display(kpvalue);
+}
+
+void auroramonitor::displayAuroraPixels()
+{
+    QString pageContent = QString::fromUtf8(auroraPixels_->downloadedData());
+    qDebug() << pageContent;
+}
+
+void auroramonitor::on_getAllskyButton_clicked()
+{
+    QUrl allskyUrl("http://www2.irf.se/allsky/LASTv2.JPG");
+    allsky_ = new FileDownloader(allskyUrl, this);
+    connect(allsky_, SIGNAL (downloaded()), this, SLOT (loadImage()));
+
+    QUrl kpUrl("http://www2.irf.se/maggraphs/preliminary_real_time_k_index_15_minutes");
+    kpIndex_ = new FileDownloader(kpUrl, this);
+    connect(kpIndex_, SIGNAL (downloaded()), this, SLOT (displayKp()));
+}
+
+void auroramonitor::on_getKpButton_clicked()
+{
+    QUrl kpUrl("http://www2.irf.se/maggraphs/preliminary_real_time_k_index_15_minutes");
+    kpIndex_ = new FileDownloader(kpUrl, this);
+    connect(kpIndex_, SIGNAL (downloaded()), this, SLOT (displayKp()));
+}
+
+void auroramonitor::on_getAuroraPixelsButton_clicked()
+{
+    QUrl auroraPixelsUrl("http://www2.irf.se/maggraphs/preliminary_real_time_k_index.php");
+    auroraPixels_ = new FileDownloader(auroraPixelsUrl, this);
+    connect(auroraPixels_, SIGNAL(downloaded()), this, SLOT (displayAuroraPixels()));
 }

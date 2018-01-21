@@ -1,6 +1,6 @@
 #ifndef AURORAMONITOR_H
 #define AURORAMONITOR_H
-
+#include "filedownloader.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -17,10 +17,18 @@ public:
 
 private:
     Ui::auroramonitor *ui;
-
+    FileDownloader* allsky_;
+    FileDownloader* kpIndex_;
+    FileDownloader* auroraPixels_;
 private slots:
+    void on_getAllskyButton_clicked();
     void loadImage();
-    void on_pushButton_clicked();
+
+    void on_getKpButton_clicked();
+    void displayKp();
+
+    void on_getAuroraPixelsButton_clicked();
+    void displayAuroraPixels();
 };
 
 #endif // AURORAMONITOR_H
